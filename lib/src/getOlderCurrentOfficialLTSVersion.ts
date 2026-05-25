@@ -3,6 +3,9 @@
     // natives
     import { get } from "node:https";
 
+    // externals
+    import semver from "semver";
+
     // locals
     import compareVersions from "./utils/compareVersions";
 
@@ -64,13 +67,13 @@ export default function getOlderCurrentOfficialLTSVersion (): Promise<string> {
                 return;
             }
 
-            const majorMatch: RegExpExecArray | null = /^v(\d+)/u.exec(release.version);
+            const coerced: semver.SemVer | null = semver.coerce(release.version);
 
-            if (!majorMatch) {
+            if (null === coerced) {
                 return;
             }
 
-            const [ , major ] = majorMatch;
+            const major: string = String(coerced.major);
             const current = latestByMajor.get(major);
 
             if (!current || 0 < compareVersions(release.version, current.version)) {
@@ -97,7 +100,14 @@ export default function getOlderCurrentOfficialLTSVersion (): Promise<string> {
             throw new Error("Not enough active LTS lines to determine the older current official LTS Node.js version");
         }
 
-        return activeLTSLines[1].version.replace(/^v/, "");
+        const olderLTS: semver.SemVer | null = semver.coerce(activeLTSLines[1].version);
+
+        if (null === olderLTS) {
+            throw new Error("Unable to parse older current official LTS Node.js version: \"" + activeLTSLines[1].version + "\"");
+        }
+
+        return olderLTS.format();
+
 
     });
 
