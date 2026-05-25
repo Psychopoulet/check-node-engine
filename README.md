@@ -60,7 +60,7 @@ checker("./package.json").then(() => {
 ### Typescript
 
 ```typescript
-import checker = require("check-version-modules");
+import checker = require("check-node-engine");
 
 checker().then(() => {
   console.log("ok");

@@ -43,24 +43,27 @@ if (0 < ARGS.length && ARGS.includes("--get-lts")) {
     });
 
 }
+else {
 
-const checker = require(join(__dirname, "..", "lib", "cjs", "main.cjs"));
-const PACKAGE = 1 < ARGS.length && ARGS.includes("--package-file") ? ARGS[ARGS.indexOf("--package-file") + 1] : join((0, process).cwd(), "package.json");
+    const checker = require(join(__dirname, "..", "lib", "cjs", "main.cjs"));
+    const PACKAGE = 1 < ARGS.length && ARGS.includes("--package-file") ? ARGS[ARGS.indexOf("--package-file") + 1] : join((0, process).cwd(), "package.json");
 
-checker(PACKAGE).then(() => {
+    checker(PACKAGE).then(() => {
 
-    console.log(colors && colors.green ? colors.green("Package node engine is up to date") : "Package node engine is up to date");
+        console.log(colors && colors.green ? colors.green("Package node engine is up to date") : "Package node engine is up to date");
 
-    (0, process).exitCode = 0;
-    (0, process).exit(0);
+        (0, process).exitCode = 0;
+        (0, process).exit(0);
 
-}).catch((err) => {
+    }).catch((err) => {
 
-    const message = err.message ? err.message : err;
+        const message = err.message ? err.message : err;
 
-    (0, console).error(colors && colors.red ? colors.red(message) : message);
+        (0, console).error(colors && colors.red ? colors.red(message) : message);
 
-    (0, process).exitCode = 1;
-    (0, process).exit(1);
+        (0, process).exitCode = 1;
+        (0, process).exit(1);
 
-});
+    });
+
+}

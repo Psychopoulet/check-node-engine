@@ -27,7 +27,7 @@
 
 export default function getOlderCurrentOfficialLTSVersion (): Promise<string> {
 
-    return new Promise((resolve: (value: Release[]) => void, reject: (reason?: Error) => void): void => {
+    return new Promise((resolve: (value: Release[]) => void, reject: (err: Error) => void): void => {
 
         get(NODEJS_DIST_INDEX_URL, (res: IncomingMessage): void => {
 
@@ -43,6 +43,10 @@ export default function getOlderCurrentOfficialLTSVersion (): Promise<string> {
 
             res.on("end", (): void => {
                 resolve(JSON.parse(data) as Release[]);
+            });
+
+            res.on("error", (err: Error): void => {
+                reject(err);
             });
 
         });
