@@ -75,12 +75,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run build
-        run: npm run build
-
       - name: Create version tag if missing on github
         id: create_version_tag
         run: |
@@ -97,6 +91,8 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npm install
+          npm run build
           git tag -a "${VERSION}" -m "Release ${VERSION}" "${GITHUB_SHA}"
           git push origin "refs/tags/${VERSION}"
           echo "tag_created=true" >> "${GITHUB_OUTPUT}"
