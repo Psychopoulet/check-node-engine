@@ -1,20 +1,28 @@
+// deps
+
+    // externals
+    import semver from "semver";
+
 // module
 
 export default function minimumVersionFromEngine (range: string): string {
 
-    const trimmed: string = range.trim().replace(/^v/, "");
-    const match: RegExpExecArray | null = /(\d+\.\d+\.\d+|\d+\.\d+|\d+)/.exec(trimmed);
+    const trimmed: string = range.trim();
+    const validRange: string | null = semver.validRange(trimmed, {
+        "includePrerelease": false,
+        "loose": true
+    });
 
-    if (!match) {
+    if (null === validRange) {
         throw new Error("Unable to parse engines.node value: \"" + range + "\"");
     }
 
-    const parts: string[] = match[1].split(".");
+    const min: semver.SemVer | null = semver.minVersion(validRange);
 
-    while (3 > parts.length) {
-        parts.push("0");
+    if (null === min) {
+        throw new Error("Unable to parse engines.node value: \"" + range + "\"");
     }
 
-    return parts.join(".");
+    return min.format();
 
 }

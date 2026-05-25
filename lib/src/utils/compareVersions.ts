@@ -1,26 +1,26 @@
 // deps
 
-    // locals
-    import parseVersion from "./parseVersion";
+    // externals
+    import semver from "semver";
+
+// private
+
+    function _coerceVersion (version: string): semver.SemVer {
+
+        const coerced: semver.SemVer | null = semver.coerce(version);
+
+        if (null === coerced) {
+            throw new Error("Unable to parse version: \"" + version + "\"");
+        }
+
+        return coerced;
+
+    }
 
 // module
 
 export default function compareVersions (a: string, b: string): number {
 
-    const partsA: number[] = parseVersion(a);
-    const partsB: number[] = parseVersion(b);
-    const length: number = Math.max(partsA.length, partsB.length);
-
-    for (let i = 0; i < length; i += 1) {
-
-        const diff = (partsA[i] ?? 0) - (partsB[i] ?? 0);
-
-        if (0 !== diff) {
-            return diff;
-        }
-
-    }
-
-    return 0;
+    return semver.compare(_coerceVersion(a), _coerceVersion(b));
 
 }
