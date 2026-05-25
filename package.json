@@ -20,6 +20,7 @@
   "scripts": {
 
     "prepare": "npx husky || true",
+    "prepack": "npm run build",
 
     "lint-bin": "npx eslint --config .eslintrc-bin.js --ext .js,.cjs,.mjs ./bin/**/*",
     "lint-back": "npx eslint --config .eslintrc-back.js --ext .ts,.cts,.mts ./lib/src/**/*",
