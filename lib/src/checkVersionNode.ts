@@ -1,6 +1,10 @@
 // deps
 
+    // natives
+    import { join } from "node:path";
+
     // locals
+    import isFile from "./utils/isFile";
     import readPackageEngineNode from "./readPackageEngineNode";
     import getOlderCurrentOfficialLTSVersion from "./getOlderCurrentOfficialLTSVersion";
     import compareVersions from "./utils/compareVersions";
@@ -8,21 +12,31 @@
 
 // module
 
-export default function checkVersionNode (): Promise<void> {
+export default function checkVersionNode (packageJsonPath: string = join(process.cwd(), "package.json")): Promise<void> {
 
-    return readPackageEngineNode().then((engineNode: string): Promise<void> => {
+    return isFile(packageJsonPath).then((isFile: boolean): void => {
 
-        return getOlderCurrentOfficialLTSVersion().then((olderCurrentOfficialLTS: string): void => {
+        if (!isFile) {
+            throw new Error("this data is not a file: \"" + packageJsonPath + "\"");
+        }
 
-            const engineMinimum: string = minimumVersionFromEngine(engineNode);
+    }).then((): Promise<void> => {
 
-            if (0 > compareVersions(engineMinimum, olderCurrentOfficialLTS)) {
+        return readPackageEngineNode(packageJsonPath).then((engineNode: string): Promise<void> => {
 
-                throw new Error(
-                    "engines.node \"" + engineNode + "\" (minimum " + engineMinimum + ") is lower than the older current official LTS Node.js (\"" + olderCurrentOfficialLTS + "\")"
-                );
+            return getOlderCurrentOfficialLTSVersion().then((olderCurrentOfficialLTS: string): void => {
 
-            }
+                const engineMinimum: string = minimumVersionFromEngine(engineNode);
+
+                if (0 > compareVersions(engineMinimum, olderCurrentOfficialLTS)) {
+
+                    throw new Error(
+                        "engines.node \"" + engineNode + "\" (minimum " + engineMinimum + ") is lower than the older current official LTS Node.js (\"" + olderCurrentOfficialLTS + "\")"
+                    );
+
+                }
+
+            });
 
         });
 

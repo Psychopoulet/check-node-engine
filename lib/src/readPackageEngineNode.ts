@@ -2,20 +2,15 @@
 
     // natives
     import { access, readFile } from "node:fs/promises";
-    import { join } from "node:path";
-
-// consts
-
-    const PACKAGE_JSON_PATH: string = join(__dirname, "package.json");
 
 // module
 
-export default function readPackageEngineNode (): Promise<string> {
+export default function readPackageEngineNode (packageJsonPath: string): Promise<string> {
 
-    return access(PACKAGE_JSON_PATH).catch((): void => {
-        throw new Error(`package.json not found at "${PACKAGE_JSON_PATH}"`);
+    return access(packageJsonPath).catch((): void => {
+        throw new Error("package.json not found at \"" + packageJsonPath + "\"");
     }).then((): Promise<string> => {
-        return readFile(PACKAGE_JSON_PATH, "utf8");
+        return readFile(packageJsonPath, "utf8");
     }).then((content: string): string => {
 
         let packageData: { "engines": { "node": string } } | null = null;
