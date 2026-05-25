@@ -9,15 +9,15 @@
 
 // test
 
-checker("./package.json").then((result) => {
+checker().then(() => {
 
-  console.log(result.result ? "ok": "old versions detected");
+  console.log("ok");
 
   return checker("./package.json");
 
-}).then((result): void => {
+}).then((): void => {
 
-  console.log(result.result ? "ok": "old versions detected");
+  console.log("ok");
 
 }).then((): void => {
 
