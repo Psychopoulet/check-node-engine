@@ -26,7 +26,7 @@ Compare the required node engine to the last older LTS node version.
 
 ### Command line options
 
-  * ``` --get-lts ``` => only get current minimal engine node
+  * ``` --get-lts ``` => only get the older current official LTS version of NodeJS
   * ``` --package-file <package path> ``` => specify an optional package path
 
 ## Examples
