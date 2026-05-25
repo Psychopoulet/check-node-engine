@@ -1,7 +1,7 @@
 {
 
   "name": "check-node-engine",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Compare the required node engine to the last older LTS node version.",
 
   "type": "commonjs",
@@ -20,7 +20,6 @@
   "scripts": {
 
     "prepare": "npx husky || true",
-    "prepack": "npm run build",
 
     "lint-bin": "npx eslint --config .eslintrc-bin.js --ext .js,.cjs,.mjs ./bin/**/*",
     "lint-back": "npx eslint --config .eslintrc-back.js --ext .ts,.cts,.mts ./lib/src/**/*",
