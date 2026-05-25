@@ -13,12 +13,6 @@ Compare the required node engine to the last older LTS node version.
 
 [![Known Vulnerabilities](https://snyk.io/test/github/Psychopoulet/check-node-engine/badge.svg)](https://snyk.io/test/github/Psychopoulet/check-node-engine)
 
-## Installation
-
-```bash
-$ npm install check-node-engine
-```
-
 ## Features
 
   * Get the older NodeJS current LTS
@@ -26,18 +20,59 @@ $ npm install check-node-engine
 
 ## Doc
 
+### Methods
+
+  * ``` (packageJsonPath?: string) => Promise<void> ``` compare node versions
+
+### Command line options
+
+  * ``` --get-lts ``` => only get current minimal engine node
+  * ``` --package-file <package path> ``` => specify an optional package path
+
 ## Examples
 
 ### Command line
 
+```bash
+$ cd ./myProject/ && npx check-node-engine
+$ cd ./myProject/ && npx check-node-engine --get-lts
+$ cd ./myProject/ && npx check-node-engine --package-file "./package.json"
+```
+
 ### Native
 
 ```javascript
+const checker = require("check-node-engine");
+
+checker().then(() => {
+  console.log("ok");
+}).catch((err) => {
+  console.error(err);
+});
+
+checker("./package.json").then(() => {
+  console.log("ok");
+}).catch((err) => {
+  console.error(err);
+});
 ```
 
 ### Typescript
 
 ```typescript
+import checker = require("check-version-modules");
+
+checker().then(() => {
+  console.log("ok");
+}).catch((err) => {
+  console.error(err);
+});
+
+checker("./package.json").then(() => {
+  console.log("ok");
+}).catch((err) => {
+  console.error(err);
+});
 ```
 
 ## Tests
