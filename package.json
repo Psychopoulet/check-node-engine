@@ -43,7 +43,7 @@
   },
 
   "bin": {
-    "check-version-modules": "./bin/cmd.js"
+    "check-node-engine": "./bin/cmd.js"
   },
   "files": [
     "/bin",
@@ -92,13 +92,13 @@
     }
   },
 
-  "homepage": "https://github.com/Psychopoulet/check-version-modules#readme",
+  "homepage": "https://github.com/Psychopoulet/check-node-engine#readme",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Psychopoulet/check-version-modules.git"
+    "url": "git://github.com/Psychopoulet/check-node-engine.git"
   },
   "bugs": {
-    "url": "https://github.com/Psychopoulet/check-version-modules/issues"
+    "url": "https://github.com/Psychopoulet/check-node-engine/issues"
   }
 
 }
