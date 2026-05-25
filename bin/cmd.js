@@ -24,13 +24,9 @@
 
 if (0 < ARGS.length && ARGS.includes("--get-lts")) {
 
-    var __importDefault = (this && this.__importDefault) || function (mod) {
-        return (mod && mod.__esModule) ? mod : { "default": mod };
-    };
+    const getOlderCurrentOfficialLTSVersion = require("../lib/cjs/getOlderCurrentOfficialLTSVersion.js");
 
-    const getOlderCurrentOfficialLTSVersion = __importDefault(require("../lib/cjs/getOlderCurrentOfficialLTSVersion.js"));
-
-    getOlderCurrentOfficialLTSVersion.default().then((lts) => {
+    (getOlderCurrentOfficialLTSVersion.default ?? getOlderCurrentOfficialLTSVersion)().then((lts) => {
 
         (0, console).log(lts);
 

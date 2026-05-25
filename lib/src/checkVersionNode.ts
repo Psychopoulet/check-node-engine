@@ -14,9 +14,9 @@
 
 export default function checkVersionNode (packageJsonPath: string = join(process.cwd(), "package.json")): Promise<void> {
 
-    return isFile(packageJsonPath).then((isFile: boolean): void => {
+    return isFile(packageJsonPath).then((isPackageAFile: boolean): void => {
 
-        if (!isFile) {
+        if (!isPackageAFile) {
             throw new Error("this data is not a file: \"" + packageJsonPath + "\"");
         }
 
