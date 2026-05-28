@@ -22,7 +22,7 @@ Compare the required node engine to the last older LTS node version.
 
 ### Methods
 
-  * ``` (packageJsonPath?: string) => Promise<void> ``` compare node versions
+  * ``` (source?: string | tPackageType) => Promise<void> ``` compare node versions
 
 ### Command line options
 

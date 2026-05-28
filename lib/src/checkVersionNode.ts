@@ -2,41 +2,62 @@
 
     // natives
     import { join } from "node:path";
+    import { readFile } from "node:fs/promises";
 
     // locals
-    import isFile from "./utils/isFile";
-    import readPackageEngineNode from "./readPackageEngineNode";
+    import checkFile from "./utils/checkFile";
+    import isPlainObject from "./utils/isPlainObject";
+    import getEngineNode from "./utils/getEngineNode";
     import getOlderCurrentOfficialLTSVersion from "./getOlderCurrentOfficialLTSVersion";
-    import compareVersions from "./utils/compareVersions";
     import minimumVersionFromEngine from "./utils/minimumVersionFromEngine";
+    import compareVersions from "./utils/compareVersions";
+
+// types & interfaces
+
+    // locals
+    export type tPackageType = Record<string, object | string | number | boolean>;
 
 // module
 
-export default function checkVersionNode (packageJsonPath: string = join(process.cwd(), "package.json")): Promise<void> {
+export default function checkVersionNode (source: string | tPackageType = join(process.cwd(), "package.json")): Promise<void> {
 
-    return isFile(packageJsonPath).then((isPackageAFile: boolean): void => {
+    return Promise.resolve().then((): Promise<tPackageType> | tPackageType => {
 
-        if (!isPackageAFile) {
-            throw new Error("this data is not a file: \"" + packageJsonPath + "\"");
+        if ("string" === typeof source) {
+
+            return checkFile(source).then(() => {
+                return readFile(source, "utf-8");
+            }).then((content: string): tPackageType => {
+                return JSON.parse(content) as tPackageType;
+            });
+
+        }
+        else if (isPlainObject(source)) {
+
+            return source;
+
+        }
+        else {
+
+            throw new TypeError("\"source\" parameter is not a string or a package type");
+
         }
 
-    }).then((): Promise<void> => {
+    }).then((packageData: tPackageType): Promise<void> => {
 
-        return readPackageEngineNode(packageJsonPath).then((engineNode: string): Promise<void> => {
+        const engineNode: string = getEngineNode(packageData);
 
-            return getOlderCurrentOfficialLTSVersion().then((olderCurrentOfficialLTS: string): void => {
+        return getOlderCurrentOfficialLTSVersion().then((olderCurrentOfficialLTS: string): void => {
 
-                const engineMinimum: string = minimumVersionFromEngine(engineNode);
+            const engineMinimum: string = minimumVersionFromEngine(engineNode);
 
-                if (0 > compareVersions(engineMinimum, olderCurrentOfficialLTS)) {
+            if (0 > compareVersions(engineMinimum, olderCurrentOfficialLTS)) {
 
-                    throw new Error(
-                        "engines.node \"" + engineNode + "\" (minimum " + engineMinimum + ") is lower than the older current official LTS Node.js (\"" + olderCurrentOfficialLTS + "\")"
-                    );
+                throw new Error(
+                    "engines.node \"" + engineNode + "\" (minimum " + engineMinimum + ") is lower than the older current official LTS Node.js (\"" + olderCurrentOfficialLTS + "\")"
+                );
 
-                }
-
-            });
+            }
 
         });
 
