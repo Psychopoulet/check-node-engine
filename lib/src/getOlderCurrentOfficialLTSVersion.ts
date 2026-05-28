@@ -15,11 +15,7 @@
     import type { IncomingMessage } from "node:http";
 
     // locals
-    type Release = {
-        "version": string;
-        "date": string;
-        "lts": string;
-    };
+    import type { Release } from "./types/node";
 
 // consts
 
@@ -56,7 +52,7 @@ export default function getOlderCurrentOfficialLTSVersion (): Promise<string> {
 
     }).then((releases: Release[]): string => {
 
-        const cutoff = new Date();
+        const cutoff: Date = new Date();
         cutoff.setMonth(cutoff.getMonth() - LTS_LINE_MAX_AGE_MONTHS);
 
         const latestByMajor: Map<string, Release> = new Map();
@@ -74,27 +70,21 @@ export default function getOlderCurrentOfficialLTSVersion (): Promise<string> {
             }
 
             const major: string = String(coerced.major);
-            const current = latestByMajor.get(major);
+            const current: Release | undefined = latestByMajor.get(major);
 
             if (!current || 0 < compareVersions(release.version, current.version)) {
 
-                latestByMajor.set(major, {
-                    "date": release.date,
-                    "lts": release.lts,
-                    "version": release.version
-                });
+                latestByMajor.set(major, { ...release });
 
             }
 
         });
 
-        const activeLTSLines: Release[] = [ ...latestByMajor.values() ]
-            .filter((release: Release): boolean => {
-                return cutoff <= new Date(release.date);
-            })
-            .sort((a: Release, b: Release): number => {
-                return compareVersions(b.version, a.version);
-            });
+        const activeLTSLines: Release[] = [ ...latestByMajor.values() ].filter((release: Release): boolean => {
+            return cutoff <= new Date(release.date);
+        }).sort((a: Release, b: Release): number => {
+            return compareVersions(b.version, a.version);
+        });
 
         if (2 > activeLTSLines.length) {
             throw new Error("Not enough active LTS lines to determine the older current official LTS Node.js version");
