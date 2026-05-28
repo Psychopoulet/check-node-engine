@@ -22,7 +22,7 @@
     "lint-bin": "npx eslint --config .eslintrc-bin.js --ext .js,.cjs,.mjs ./bin/**/*",
     "lint-back": "npx eslint --config .eslintrc-back.js --ext .ts,.cts,.mts ./lib/src/**/*",
     "lint-tests": "npx eslint --config .eslintrc-tests.js --ext .js,.cjs,.mjs ./test/**/*",
-    "lint": "npm run lint-bin && npm run lint-back && npm run lint-tests",
+    "lint": "npm run lint-bin && npm run build && npm run lint-back && npm run lint-tests",
 
     "clean-back": "npx rimraf ./lib/cjs",
     "clean": "npm run clean-back",
