@@ -17,11 +17,47 @@ describe("compareVersions", () => {
         strictEqual(compareVersions("22.0.0", "22.0.0"), 0);
     });
 
-    it("should throw on invalid versions", () => {
+    it("should compare mixed version formats", () => {
+        strictEqual(compareVersions("v22.14.0", "22.13.0"), 1);
+        strictEqual(compareVersions("22", "22.0.0"), 0);
+        strictEqual(compareVersions("22.0.0", "v22.0.0"), 0);
+    });
+
+    it("should compare patch and minor versions", () => {
+        strictEqual(compareVersions("22.0.1", "22.0.0"), 1);
+        strictEqual(compareVersions("22.1.0", "22.0.9"), 1);
+        strictEqual(compareVersions("22.0.0-beta.1", "22.0.0-beta.1"), 0);
+    });
+
+    it("should throw on invalid first version", () => {
+
+        const testedVersion = "not-a-version";
 
         throws(() => {
-            compareVersions("not-a-version", "22.0.0");
-        }, "Unable to parse version");
+            compareVersions(testedVersion, "22.0.0");
+        }, (err) => {
+
+            return err instanceof Error
+                && err.message.includes("Unable to parse version")
+                && err.message.includes(testedVersion);
+
+        });
+
+    });
+
+    it("should throw on invalid second version", () => {
+
+        const testedVersion = "not-a-version";
+
+        throws(() => {
+            compareVersions("22.0.0", testedVersion);
+        }, (err) => {
+
+            return err instanceof Error
+                && err.message.includes("Unable to parse version")
+                && err.message.includes(testedVersion);
+
+        });
 
     });
 
