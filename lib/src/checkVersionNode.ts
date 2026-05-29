@@ -8,7 +8,7 @@
     import checkFile from "./utils/checkFile";
     import isPlainObject from "./utils/isPlainObject";
     import getEngineNode from "./utils/getEngineNode";
-    import getOlderCurrentOfficialLTSVersion from "./getOlderCurrentOfficialLTSVersion";
+    import getOlderCurrentOfficialLTSVersion from "./utils/getOlderCurrentOfficialLTSVersion";
     import minimumVersionFromEngine from "./utils/minimumVersionFromEngine";
     import compareVersions from "./utils/compareVersions";
 

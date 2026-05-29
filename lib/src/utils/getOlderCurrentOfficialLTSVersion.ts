@@ -7,7 +7,7 @@
     import semver from "semver";
 
     // locals
-    import compareVersions from "./utils/compareVersions";
+    import compareVersions from "./compareVersions";
 
 // types & interfaces
 
@@ -15,7 +15,7 @@
     import type { IncomingMessage } from "node:http";
 
     // locals
-    import type { Release } from "./types/node";
+    import type { Release } from "../types/node";
 
 // consts
 
