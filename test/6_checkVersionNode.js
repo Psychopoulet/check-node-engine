@@ -15,7 +15,7 @@ describe("checkVersionNode", () => {
 
         return doesNotReject(checkVersionNode({
             "engines": {
-                "node": ">=22.22.3"
+                "node": ">=22.23.2"
             }
         }));
 

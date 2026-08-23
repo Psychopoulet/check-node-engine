@@ -16,7 +16,7 @@ describe("isPlainObject", () => {
 
         ok(isPlainObject({
             "engines": {
-                "node": ">=22.22.3"
+                "node": ">=22.23.2"
             }
         }));
 
