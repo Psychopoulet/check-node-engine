@@ -14,9 +14,9 @@ describe("getEngineNode", () => {
 
         strictEqual(getEngineNode({
             "engines": {
-                "node": ">=22.22.3"
+                "node": ">=22.23.2"
             }
-        }), ">=22.22.3");
+        }), ">=22.23.2");
 
     });
 
