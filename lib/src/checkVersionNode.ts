@@ -8,7 +8,7 @@
     import checkFile from "./utils/checkFile";
     import isPlainObject from "./utils/isPlainObject";
     import getEngineNode from "./utils/getEngineNode";
-    import getOlderCurrentOfficialLTSVersion from "./utils/getOlderCurrentOfficialLTSVersion";
+    import getCachedOlderCurrentOfficialLTSVersion from "./utils/getCachedOlderCurrentOfficialLTSVersion";
     import minimumVersionFromEngine from "./utils/minimumVersionFromEngine";
     import compareVersions from "./utils/compareVersions";
 
@@ -47,7 +47,7 @@ export default function checkVersionNode (source: string | tPackageType = join(p
 
         const engineNode: string = getEngineNode(packageData);
 
-        return getOlderCurrentOfficialLTSVersion().then((olderCurrentOfficialLTS: string): void => {
+        return getCachedOlderCurrentOfficialLTSVersion().then((olderCurrentOfficialLTS: string): void => {
 
             const engineMinimum: string = minimumVersionFromEngine(engineNode);
 
