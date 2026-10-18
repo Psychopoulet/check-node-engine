@@ -5,7 +5,7 @@
     const { doesNotReject, rejects } = require("node:assert");
 
     // locals
-    const checkVersionNode = require("../lib/cjs/checkVersionNode.js").default;
+    const checkVersionNode = require("../lib/src/checkVersionNode.ts").default;
 
 // tests
 
@@ -15,7 +15,7 @@ describe("checkVersionNode", () => {
 
         return doesNotReject(checkVersionNode({
             "engines": {
-                "node": ">=22.23.2"
+                "node": ">=22.23.3"
             }
         }));
 

@@ -5,7 +5,7 @@
     const { doesNotReject, rejects } = require("node:assert");
 
     // locals
-    const checkFile = require("../lib/cjs/utils/checkFile.js").default;
+    const checkFile = require("../lib/src/utils/checkFile.ts").default;
 
 // tests
 

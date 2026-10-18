@@ -4,7 +4,7 @@
     const { ok, strictEqual } = require("node:assert");
 
     // locals
-    const isPlainObject = require("../lib/cjs/utils/isPlainObject.js").default;
+    const isPlainObject = require("../lib/src/utils/isPlainObject.ts").default;
 
 // tests
 

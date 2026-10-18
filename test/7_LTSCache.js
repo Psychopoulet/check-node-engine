@@ -7,7 +7,7 @@
     const { deepStrictEqual, doesNotReject, strictEqual } = require("node:assert");
 
     // locals
-    const LTSCache = require("../lib/cjs/utils/LTSCache.js").default;
+    const LTSCache = require("../lib/src/utils/LTSCache.ts").default;
 
 // private
 

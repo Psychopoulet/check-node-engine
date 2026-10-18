@@ -4,7 +4,7 @@
     const { strictEqual, throws } = require("node:assert");
 
     // locals
-    const getEngineNode = require("../lib/cjs/utils/getEngineNode.js").default;
+    const getEngineNode = require("../lib/src/utils/getEngineNode.ts").default;
 
 // tests
 

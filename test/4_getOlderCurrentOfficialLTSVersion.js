@@ -6,7 +6,7 @@
     const { rejects, strictEqual } = require("node:assert");
 
     // locals
-    const getOlderCurrentOfficialLTSVersion = require("../lib/cjs/utils/getOlderCurrentOfficialLTSVersion.js").default;
+    const getOlderCurrentOfficialLTSVersion = require("../lib/src/utils/getOlderCurrentOfficialLTSVersion.ts").default;
 
 // private
 
