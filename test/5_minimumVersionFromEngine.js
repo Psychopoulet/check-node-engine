@@ -61,6 +61,7 @@ describe("minimumVersionFromEngine", () => {
         _assertParseError("not-a-version");
         _assertParseError(">=not-a-version");
         _assertParseError(">=");
+        _assertParseError("<0.0.0");
 
     });
 

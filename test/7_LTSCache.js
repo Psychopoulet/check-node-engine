@@ -3,8 +3,9 @@
     // natives
     const os = require("node:os");
     const { join } = require("node:path");
-    const { mkdir, mkdtemp, readdir, readFile, rm, writeFile } = require("node:fs/promises");
-    const { deepStrictEqual, doesNotReject, strictEqual } = require("node:assert");
+    const fsPromises = require("node:fs/promises");
+    const { mkdir, mkdtemp, readdir, readFile, rm, writeFile } = fsPromises;
+    const { deepStrictEqual, doesNotReject, strictEqual, throws } = require("node:assert");
 
     // locals
     const LTSCache = require("../lib/src/utils/LTSCache.ts").default;
@@ -214,6 +215,77 @@ describe("LTSCache", () => {
                 return LTSCache.readFresh();
             }).then((version) => {
                 strictEqual(version, "22.14.0");
+            });
+
+        });
+
+        it("should resolve when the cache directory cannot be created", () => {
+
+            const blockedHome = join(_fakeHome, "not-a-directory");
+
+            return writeFile(blockedHome, "x", "utf-8").then(() => {
+
+                os.homedir = () => {
+                    return blockedHome;
+                };
+
+                return doesNotReject(LTSCache.write("22.14.0"));
+
+            });
+
+        });
+
+    });
+
+    describe("read errors", () => {
+
+        it("should return null when the fresh cache file cannot be read", () => {
+
+            const originalReadFile = fsPromises.readFile;
+
+            fsPromises.readFile = () => {
+                return Promise.reject(new Error("unreadable"));
+            };
+
+            return _writeCacheFile(_freshDate(), "22.14.0").then(() => {
+                return LTSCache.readFresh();
+            }).then((version) => {
+                strictEqual(version, null);
+            }).finally(() => {
+                fsPromises.readFile = originalReadFile;
+            });
+
+        });
+
+        it("should ignore a cache filename whose time is not a real date", () => {
+
+            const dir = _cacheDir();
+
+            return mkdir(dir, {
+                "recursive": true
+            }).then(() => {
+                return writeFile(join(dir, "2026-10-23T99-99-99-999Z"), "22.14.0", "utf-8");
+            }).then(() => {
+                return LTSCache.readFresh();
+            }).then((version) => {
+                strictEqual(version, null);
+            });
+
+        });
+
+    });
+
+    describe("construction", () => {
+
+        it("should throw when constructed", () => {
+
+            throws(() => {
+                return new LTSCache();
+            }, (err) => {
+
+                return err instanceof Error
+                    && err.message.includes("LTSCache is a static class");
+
             });
 
         });
