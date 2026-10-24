@@ -4,7 +4,6 @@
 
     // natives
     const { join } = require("node:path");
-    const { EOL } = require("node:os");
 
     // externals
 
@@ -12,7 +11,7 @@
     try { // test require optional deps
         colors = require("colors/safe");
     }
-    catch (e) {
+    catch {
         // nothing to do here
     }
 
@@ -50,7 +49,7 @@ else {
 
     checker(PACKAGE).then(() => {
 
-        console.log(colors && colors.green ? colors.green("Package node engine is up to date") : "Package node engine is up to date");
+        (0, console).log(colors && colors.green ? colors.green("Package node engine is up to date") : "Package node engine is up to date");
 
         (0, process).exitCode = 0;
         (0, process).exit(0);

@@ -3,10 +3,13 @@
     // natives
     const { EventEmitter } = require("node:events");
     const https = require("node:https");
+    const semver = require("semver");
     const { rejects, strictEqual } = require("node:assert");
 
     // locals
-    const getOlderCurrentOfficialLTSVersion = require("../lib/cjs/utils/getOlderCurrentOfficialLTSVersion.js").default;
+    const getOlderCurrentOfficialLTSVersion = require("../lib/src/utils/getOlderCurrentOfficialLTSVersion.ts").default;
+
+    require("../lib/src/types/node.ts");
 
 // private
 
@@ -72,6 +75,34 @@
             "version": version,
             "date": date,
             "lts": lts
+        };
+
+    }
+
+    function _restoreCoerceAfterSecondParse (version) {
+
+        const originalCoerce = semver.coerce;
+        let seen = false;
+
+        semver.coerce = (value, options) => {
+
+            const key = String(value);
+            const fromCompare = String(new Error().stack).includes("compareVersions");
+
+            if (version === key && false === fromCompare && seen) {
+                return null;
+            }
+
+            if (version === key && false === fromCompare) {
+                seen = true;
+            }
+
+            return originalCoerce(value, options);
+
+        };
+
+        return () => {
+            semver.coerce = originalCoerce;
         };
 
     }
@@ -185,6 +216,27 @@ describe("getOlderCurrentOfficialLTSVersion", () => {
 
                 }
             );
+
+        });
+
+        it("should reject when the older LTS version cannot be parsed", () => {
+
+            const restoreCoerce = _restoreCoerceAfterSecondParse("v22.14.0");
+
+            _mockNodejsDistIndex([
+                _release("v24.1.0", "Krypton"),
+                _release("v22.14.0", "Jod")
+            ]);
+
+            return rejects(
+                getOlderCurrentOfficialLTSVersion(),
+                (err) => {
+
+                    return err instanceof Error
+                        && err.message.includes("Unable to parse older current official LTS");
+
+                }
+            ).finally(restoreCoerce);
 
         });
 

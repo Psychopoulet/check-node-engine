@@ -4,7 +4,7 @@
     const { strictEqual, throws } = require("node:assert");
 
     // locals
-    const compareVersions = require("../lib/cjs/utils/compareVersions.js").default;
+    const compareVersions = require("../lib/src/utils/compareVersions.ts").default;
 
 // tests
 

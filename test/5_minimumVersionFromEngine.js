@@ -4,7 +4,7 @@
     const { strictEqual, throws } = require("node:assert");
 
     // locals
-    const minimumVersionFromEngine = require("../lib/cjs/utils/minimumVersionFromEngine.js").default;
+    const minimumVersionFromEngine = require("../lib/src/utils/minimumVersionFromEngine.ts").default;
 
 // private
 
@@ -61,6 +61,7 @@ describe("minimumVersionFromEngine", () => {
         _assertParseError("not-a-version");
         _assertParseError(">=not-a-version");
         _assertParseError(">=");
+        _assertParseError("<0.0.0");
 
     });
 

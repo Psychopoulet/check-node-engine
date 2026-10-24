@@ -1,4 +1,4 @@
-export type Release = { // Version = "x.y.z"
+export interface Release { // Version = "x.y.z"
 
     // used
     "version": string; // "v"Version
@@ -15,4 +15,4 @@ export type Release = { // Version = "x.y.z"
     "modules": string; // number
     "security": boolean;
 
-};
+}
