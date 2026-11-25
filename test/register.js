@@ -95,7 +95,6 @@
 
     const resolveFilename = Module._resolveFilename;
 
-    Module._extensions[".ts"] = _load;
     Module._extensions[".cts"] = _load;
     Module._resolveFilename = function _resolveFilename (request, parent, ...rest) {
 

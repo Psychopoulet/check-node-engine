@@ -34,9 +34,9 @@ Compare the required node engine to the last older LTS node version.
 ### Command line
 
 ```bash
-$ cd ./myProject/ && npx check-node-engine
-$ cd ./myProject/ && npx check-node-engine --get-lts
-$ cd ./myProject/ && npx check-node-engine --package-file "./package.json"
+$ cd ./myProject/ && bunx check-node-engine
+$ cd ./myProject/ && bunx check-node-engine --get-lts
+$ cd ./myProject/ && bunx check-node-engine --package-file "./package.json"
 ```
 
 ### Native
@@ -78,7 +78,7 @@ checker("./package.json").then(() => {
 ## Tests
 
 ```bash
-$ npm run tests
+$ bun run tests
 ```
 
 ## License
